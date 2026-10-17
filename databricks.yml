@@ -1,0 +1,13 @@
+bundle:
+  name: stock_market_lakehouse
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-2d887e69-7e32.cloud.databricks.com
+      profile: STOCK_DEV
