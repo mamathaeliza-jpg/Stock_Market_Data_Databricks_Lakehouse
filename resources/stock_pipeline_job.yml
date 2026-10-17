@@ -1,0 +1,9 @@
+resources:
+  jobs:
+    stock_pipeline_job:
+      name: stock-market-poc-job
+
+      tasks:
+        - task_key: test_pipeline
+          notebook_task:
+            notebook_path: ../src/test_pipeline.py
