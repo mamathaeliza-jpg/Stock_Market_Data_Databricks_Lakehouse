@@ -1,5 +1,10 @@
+
 # ==========================================
 # GOLD 2: MARKET OVERVIEW MAPPER
+# ==========================================
+
+# ==========================================
+# STEP 0: IMPORT REQUIRED MODULES
 # ==========================================
 
 from pyspark.sql import functions as F
@@ -119,35 +124,52 @@ class Market_Overview_Gold_Mapper:
                 "asset_type"
             )
             .agg(
-                F.count("*").alias("observation_count"),
+                F.count("*").alias(
+                    "observation_count"
+                ),
 
+                # Closing price
                 F.max(
                     F.when(
                         F.col("metric_type") == "close",
                         F.col("metric_value")
                     )
-                ).alias("close_price"),
+                ).alias(
+                    "close_price"
+                ),
 
+                # Quote / current price
                 F.max(
                     F.when(
                         F.col("metric_type") == "price",
                         F.col("metric_value")
                     )
-                ).alias("quote_price"),
+                ).alias(
+                    "quote_price"
+                ),
 
+                # Trading volume
                 F.max(
                     F.when(
                         F.col("metric_type") == "volume",
                         F.col("metric_value")
                     )
-                ).alias("volume"),
+                ).alias(
+                    "volume"
+                ),
 
+                # FRED interest rate
                 F.max(
                     F.when(
-                        F.col("metric_type") == "rate",
+                        F.col("metric_type").isin(
+                            "rate",
+                            "interest_rate"
+                        ),
                         F.col("metric_value")
                     )
-                ).alias("interest_rate")
+                ).alias(
+                    "interest_rate"
+                )
             )
             .withColumn(
                 "market_price",
@@ -173,13 +195,21 @@ class Market_Overview_Gold_Mapper:
                 "observation_date"
             )
             .agg(
-                F.max("previous_close").alias(
+                F.max(
+                    "previous_close"
+                ).alias(
                     "previous_close"
                 ),
-                F.max("price_change").alias(
+
+                F.max(
+                    "price_change"
+                ).alias(
                     "price_change"
                 ),
-                F.max("percentage_change").alias(
+
+                F.max(
+                    "percentage_change"
+                ).alias(
                     "percentage_change"
                 )
             )
@@ -221,63 +251,93 @@ class Market_Overview_Gold_Mapper:
                 "source_name"
             )
             .agg(
-                F.countDistinct("asset_id").alias(
+                # Number of distinct assets
+                F.countDistinct(
+                    "asset_id"
+                ).alias(
                     "total_assets"
                 ),
 
-                F.sum("observation_count").cast("long").alias(
+                # Total market observations
+                F.sum(
+                    "observation_count"
+                ).cast("long").alias(
                     "total_observations"
                 ),
 
-                F.avg("market_price").alias(
+                # Price statistics
+                F.avg(
+                    "market_price"
+                ).alias(
                     "average_price"
                 ),
 
-                F.min("market_price").alias(
+                F.min(
+                    "market_price"
+                ).alias(
                     "minimum_price"
                 ),
 
-                F.max("market_price").alias(
+                F.max(
+                    "market_price"
+                ).alias(
                     "maximum_price"
                 ),
 
-                F.avg("price_change").alias(
+                # Price movement statistics
+                F.avg(
+                    "price_change"
+                ).alias(
                     "average_price_change"
                 ),
 
-                F.avg("percentage_change").alias(
+                F.avg(
+                    "percentage_change"
+                ).alias(
                     "average_percentage_change"
                 ),
 
+                # Positive price movements
                 F.sum(
                     F.when(
-                        F.col("price_change") > 0, 1
+                        F.col("price_change") > 0,
+                        1
                     ).otherwise(0)
                 ).cast("long").alias(
                     "positive_movements"
                 ),
 
+                # Negative price movements
                 F.sum(
                     F.when(
-                        F.col("price_change") < 0, 1
+                        F.col("price_change") < 0,
+                        1
                     ).otherwise(0)
                 ).cast("long").alias(
                     "negative_movements"
                 ),
 
+                # Unchanged prices
                 F.sum(
                     F.when(
-                        F.col("price_change") == 0, 1
+                        F.col("price_change") == 0,
+                        1
                     ).otherwise(0)
                 ).cast("long").alias(
                     "unchanged_movements"
                 ),
 
-                F.sum("volume").alias(
+                # Total trading volume
+                F.sum(
+                    "volume"
+                ).alias(
                     "total_trading_volume"
                 ),
 
-                F.avg("interest_rate").alias(
+                # FRED interest rate
+                F.avg(
+                    "interest_rate"
+                ).alias(
                     "average_interest_rate"
                 )
             )
@@ -296,5 +356,7 @@ class Market_Overview_Gold_Mapper:
                 Model.GOLD_LOADED_AT,
                 F.current_timestamp()
             )
-            .select(*Model.COLUMNS)
+            .select(
+                *Model.COLUMNS
+            )
         )

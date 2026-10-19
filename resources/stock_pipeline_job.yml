@@ -1,9 +1,30 @@
+
 resources:
   jobs:
     stock_pipeline_job:
       name: stock-market-poc-job
 
+      # ==========================================
+      # STEP 1: SERVERLESS ENVIRONMENT
+      # ==========================================
+
+      environments:
+        - environment_key: default
+          spec:
+            client: "2"
+
+      # ==========================================
+      # STEP 2: PIPELINE TASKS
+      # ==========================================
+
       tasks:
         - task_key: test_pipeline
           notebook_task:
             notebook_path: ../src/test_pipeline.py
+
+        - task_key: gold_market_overview
+          depends_on:
+            - task_key: test_pipeline
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/Gold/Process/Market_Overview_Gold_Process.py
