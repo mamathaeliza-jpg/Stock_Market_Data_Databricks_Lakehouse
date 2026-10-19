@@ -1,0 +1,112 @@
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tiingo Historical Stock Prices Contract",
+  "description": "Data contract for Microsoft (MSFT) daily historical stock prices sourced from the Tiingo API.",
+  "type": "object",
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "const": "MSFT",
+      "description": "Stock ticker symbol"
+    },
+    "trade_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Stock trading date"
+    },
+    "open_price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Opening stock price"
+    },
+    "high_price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Highest stock price"
+    },
+    "low_price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Lowest stock price"
+    },
+    "close_price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Closing stock price"
+    },
+    "volume": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of shares traded"
+    },
+    "adjusted_open": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Adjusted opening stock price"
+    },
+    "adjusted_high": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Adjusted highest stock price"
+    },
+    "adjusted_low": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Adjusted lowest stock price"
+    },
+    "adjusted_close": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Adjusted closing stock price"
+    },
+    "adjusted_volume": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Adjusted trading volume"
+    },
+    "dividend_cash": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Cash dividend amount"
+    },
+    "split_factor": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0,
+      "description": "Stock split adjustment factor"
+    },
+    "source": {
+      "type": "string",
+      "const": "tiingo",
+      "description": "API data provider"
+    },
+    "batch_id": {
+      "type": "string",
+      "description": "Ingestion batch identifier"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original ingestion timestamp"
+    },
+    "bronze_loaded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Bronze processing timestamp"
+    }
+  },
+  "required": [
+    "symbol",
+    "trade_date",
+    "open_price",
+    "high_price",
+    "low_price",
+    "close_price",
+    "volume",
+    "source",
+    "batch_id",
+    "ingested_at",
+    "bronze_loaded_at"
+  ],
+  "additionalProperties": false
+}

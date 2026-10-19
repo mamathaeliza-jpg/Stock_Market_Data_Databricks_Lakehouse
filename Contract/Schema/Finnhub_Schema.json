@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Finnhub Stock Quote Contract",
+  "description": "Data contract for Microsoft (MSFT) stock quotes sourced from Finnhub API.",
+  "type": "object",
+  "properties": {
+    "symbol": {
+      "type": "string",
+      "description": "Stock ticker symbol"
+    },
+    "source": {
+      "type": "string",
+      "const": "finnhub"
+    },
+    "batch_id": {
+      "type": "string"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "quote_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "current_price": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "open_price": {
+      "type": ["number", "null"]
+    },
+    "high_price": {
+      "type": ["number", "null"]
+    },
+    "low_price": {
+      "type": ["number", "null"]
+    },
+    "previous_close": {
+      "type": ["number", "null"]
+    },
+    "price_change": {
+      "type": ["number", "null"]
+    },
+    "percent_change": {
+      "type": ["number", "null"]
+    },
+    "bronze_loaded_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "symbol",
+    "source",
+    "batch_id",
+    "ingested_at",
+    "quote_timestamp",
+    "current_price",
+    "bronze_loaded_at"
+  ],
+  "additionalProperties": false
+}

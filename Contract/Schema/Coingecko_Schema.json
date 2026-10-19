@@ -1,0 +1,78 @@
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CoinGecko Cryptocurrency Price Contract",
+  "description": "Data contract for Bitcoin (BTC) and Ethereum (ETH) cryptocurrency prices sourced from CoinGecko API.",
+  "type": "object",
+  "properties": {
+    "coin_id": {
+      "type": "string",
+      "enum": ["bitcoin", "ethereum"],
+      "description": "CoinGecko cryptocurrency identifier"
+    },
+    "symbol": {
+      "type": "string",
+      "enum": ["BTC", "ETH"],
+      "description": "Cryptocurrency ticker symbol"
+    },
+    "currency": {
+      "type": "string",
+      "const": "USD",
+      "description": "Quote currency"
+    },
+    "current_price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Current cryptocurrency price in USD"
+    },
+    "market_cap": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Cryptocurrency market capitalization"
+    },
+    "volume_24h": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "description": "Trading volume over the last 24 hours"
+    },
+    "price_change_24h": {
+      "type": ["number", "null"],
+      "description": "Percentage price change over 24 hours"
+    },
+    "last_updated_at": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp of the latest market price update"
+    },
+    "source": {
+      "type": "string",
+      "const": "coingecko",
+      "description": "API data provider"
+    },
+    "batch_id": {
+      "type": "string",
+      "description": "Ingestion batch identifier"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time when the API response was ingested"
+    },
+    "bronze_loaded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Bronze processing timestamp"
+    }
+  },
+  "required": [
+    "coin_id",
+    "symbol",
+    "currency",
+    "current_price",
+    "source",
+    "batch_id",
+    "ingested_at",
+    "bronze_loaded_at"
+  ],
+  "additionalProperties": false
+}

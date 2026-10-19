@@ -1,0 +1,76 @@
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FRED Economic Data Contract",
+  "description": "Data contract for Federal Funds Effective Rate (DFF) observations sourced from the FRED API.",
+  "type": "object",
+  "properties": {
+    "series_id": {
+      "type": "string",
+      "const": "DFF",
+      "description": "FRED economic series identifier"
+    },
+    "observation_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the economic observation"
+    },
+    "value": {
+      "type": ["number", "null"],
+      "description": "Economic indicator value, or null when data is unavailable"
+    },
+    "realtime_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Start date of the real-time observation period"
+    },
+    "realtime_end": {
+      "type": "string",
+      "format": "date",
+      "description": "End date of the real-time observation period"
+    },
+    "units": {
+      "type": "string",
+      "const": "Percent",
+      "description": "Measurement unit"
+    },
+    "frequency": {
+      "type": "string",
+      "const": "Daily",
+      "description": "Observation frequency"
+    },
+    "source": {
+      "type": "string",
+      "const": "fred",
+      "description": "API data provider"
+    },
+    "batch_id": {
+      "type": "string",
+      "description": "Ingestion batch identifier"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Original ingestion timestamp"
+    },
+    "bronze_loaded_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Bronze processing timestamp"
+    }
+  },
+  "required": [
+    "series_id",
+    "observation_date",
+    "value",
+    "realtime_start",
+    "realtime_end",
+    "units",
+    "frequency",
+    "source",
+    "batch_id",
+    "ingested_at",
+    "bronze_loaded_at"
+  ],
+  "additionalProperties": false
+}
